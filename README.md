@@ -1,6 +1,6 @@
 # 🎯 AI Career Mentor - Your Personal Career Guidance Platform
 
-**Created by: Krishna Nand Pathak**
+**Created by: Hrudai Deepak Bonagiri**
 
 ---
 
@@ -1476,3 +1476,4 @@ Happy coding! 🚀
 
 --- Krishna Nand Pathak
 OPENAI_API_KEY="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"
+

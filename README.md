@@ -1,0 +1,2 @@
+# -AI-Career-Mentor---Your-Personal-Career-Guidance-Platform
+Hey there! Let me tell you about this project I built. Imagine having a personal career mentor who knows everything about you - your resume, your skills, your career goals, and even remembers every conversation you've had with them across multiple sessions. That's exactly what this AI Career Mentor does!  This is a full-stack web application

@@ -4,7 +4,7 @@ import requests
 def render_roadmap(user_id: int):
     st.header("🗺️ Career Roadmap")
     
-    API_URL = "http://localhost:8000"
+    API_URL = "BACKEND_URL"
     roadmap_steps = []
     
     try:
@@ -107,3 +107,4 @@ def render_roadmap(user_id: int):
                     st.rerun()
             else:
                 st.success("You've completed this step! Great progress! 🎉")
+

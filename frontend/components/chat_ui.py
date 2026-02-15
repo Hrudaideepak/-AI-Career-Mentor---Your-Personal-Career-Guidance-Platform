@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-API_URL = "http://localhost:8000"
+API_URL = "BACKEND_URL"
 
 def render_chat(user_id: int):
     st.header("💬 Chat with your Mentor")
@@ -79,3 +79,4 @@ def render_chat(user_id: int):
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
+

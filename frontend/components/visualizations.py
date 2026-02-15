@@ -7,7 +7,7 @@ import pandas as pd
 def render_visualizations(user_id: int):
     st.header("📊 Growth & Progress Tracking")
     
-    API_URL = "http://localhost:8000"
+    API_URL = "BACKEND_URL"
     data = {}
     
     try:
@@ -40,3 +40,4 @@ def render_visualizations(user_id: int):
             st.plotly_chart(fig_bar, use_container_width=True)
         else:
             st.warning("No skills detected yet.")
+

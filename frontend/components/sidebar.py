@@ -58,22 +58,39 @@ def render_sidebar(user_id: int):
 
         st.markdown("---")
         st.header("Resume Upload")
-        uploaded_file = st.file_uploader("Upload your resume", type=["pdf", "txt", "csv", "jpg", "png"])
-        if uploaded_file is not None:
-            if st.button("📄 Analyze Resume"):
-                with st.spinner("Analyzing..."):
-                    current_session_id = st.session_state.get("current_session_id")
-                    try:
-                        url = f"{API_URL}/resumes/upload/{user_id}"
-                        if current_session_id:
-                            url += f"?session_id={current_session_id}"
-                            
-                        res = requests.post(url, files={"file": (uploaded_file.name, uploaded_file.getvalue())})
-                        if res.status_code == 200:
-                            st.success("Resume uploaded and analyzed!")
-                        else:
-                            st.error("Failed to upload resume.")
-                    except Exception as e:
-                        st.error(f"Error: {e}")
+        uploaded_file = st.file_uploader(
+    "Upload your resume",
+    type=["pdf", "txt", "csv", "jpg", "png"]
+)
+
+analyze = st.button("📄 Analyze Resume")
+
+if uploaded_file and analyze:
+    with st.spinner("Analyzing..."):
+        try:
+            url = f"{API_URL}/resumes/upload/{user_id}"
+            if st.session_state.get("current_session_id"):
+                url += f"?session_id={st.session_state.current_session_id}"
+
+            res = requests.post(
+                url,
+                files={
+                    "file": (
+                        uploaded_file.name,
+                        uploaded_file.getvalue(),
+                        uploaded_file.type
+                    )
+                },
+                timeout=60
+            )
+
+            if res.status_code == 200:
+                st.success("Resume uploaded and analyzed!")
+            else:
+                st.error(f"Upload failed: {res.text}")
+
+        except Exception as e:
+            st.error(f"Error: {e}")
+
 
 

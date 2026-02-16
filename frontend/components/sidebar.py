@@ -3,6 +3,7 @@ import requests
 import os
 
 API_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
+API_URL = API_URL.rstrip("/")
 
 def render_sidebar(user_id: int):
     with st.sidebar:
@@ -64,17 +65,26 @@ def render_sidebar(user_id: int):
                 with st.spinner("Analyzing..."):
                     current_session_id = st.session_state.get("current_session_id")
                     try:
+            # Construct URL carefully
                         url = f"{API_URL}/resumes/upload/{user_id}"
-                        if current_session_id:
-                            url += f"?session_id={current_session_id}"
-                            
-                        res = requests.post(url, files={"file": (uploaded_file.name, uploaded_file.getvalue())})
+                        params = {"session_id": current_session_id} if current_session_id else {}
+            
+            # Include the file name and content type
+                        files = {
+                            "file": (uploaded_file.name, uploaded_file.getvalue(), uploaded_file.type)
+                        }
+            
+            # Pass params separately for cleaner URL handling
+                        res = requests.post(url, params=params, files=files)
+            
                         if res.status_code == 200:
                             st.success("Resume uploaded and analyzed!")
+                            st.rerun() # Refresh to show changes
                         else:
-                            st.error("Failed to upload resume.")
+                            st.error(f"Upload failed ({res.status_code}): {res.text}")
                     except Exception as e:
-                        st.error(f"Error: {e}")
+                st.error(f"Connection Error: {e}")
+
 
 
 

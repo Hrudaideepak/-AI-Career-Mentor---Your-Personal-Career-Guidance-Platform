@@ -1,7 +1,8 @@
 import streamlit as st
 import requests
+import os
 
-API_URL = "http://localhost:8000"
+API_URL =os.getenv("BACKEND_URL", "http://localhost:8000")
 
 def render_sidebar(user_id: int):
     with st.sidebar:
@@ -64,14 +65,17 @@ def render_sidebar(user_id: int):
                     current_session_id = st.session_state.get("current_session_id")
                     try:
                         url = f"{API_URL}/resumes/upload/{user_id}"
-                        if current_session_id:
-                            url += f"?session_id={current_session_id}"
+                        if st.session_state.get("current_session_id"):
+                            url += f"?session_id={st.session_state.current_session_id}"
                             
-                        res = requests.post(url, files={"file": (uploaded_file.name, uploaded_file.getvalue())})
+                        res = requests.post(url,files={"file": (uploaded_file.name,uploaded_file.getvalue(),uploaded_file.type)},timeout=60)
                         if res.status_code == 200:
                             st.success("Resume uploaded and analyzed!")
                         else:
                             st.error("Failed to upload resume.")
+                            st.error(f"Upload failed: {res.text}")
+
                     except Exception as e:
                         st.error(f"Error: {e}")
+
 
